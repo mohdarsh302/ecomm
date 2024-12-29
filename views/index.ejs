@@ -1,0 +1,67 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+</head>
+<body>
+    <h1>Shopping Cart</h1>
+
+    <h3>Node.js and Express book</h3>
+    <p>Price: $50.00</p>
+    <p>Quantity: 1</p>
+    <br>
+    <h3>JavaScript T-Shirt</h3>
+    <p>Price: $20.00</p>
+    <p>Quantity: 2</p>
+
+    <form action="/cart-checkout" method="post">
+        <input type="submit" value="Proceed to Checkout">
+    </form>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Checkout</title>
+</head>
+<body>
+  <h2>Proceed to Checkout</h2>
+  <form id="checkout-form">
+    <input type="submit" value="Proceed to Checkout">
+  </form>
+
+  <script>
+    const authToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZW1haWwiOiJ1c2VyNEBnbWFpbC5jb20iLCJpYXQiOjE3MzUyOTY4NzAsImV4cCI6MTczNTMwMDQ3MH0.4H8ID27x5s53G9BGF5r1GxdK7_s9HFionU1oea8MWAw'; // Replace with the actual token
+
+    document.getElementById('checkout-form').addEventListener('submit', async (event) => {
+      event.preventDefault(); // Prevent the default form submission
+
+      try {
+        const response = await fetch('/api/cart/cart-checkout', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${authToken}`,
+          },
+          body: JSON.stringify({}), // Pass any required body data here
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+          alert('Checkout successful');
+          console.log(data); // Handle success response
+          // Redirect to Stripe payment page or handle it further
+        } else {
+          alert(`Error: ${data.message}`);
+        }
+      } catch (error) {
+        console.error('Error during checkout:', error);
+        alert('An error occurred during checkout');
+      }
+    });
+  </script>
+</body>
+</html>
